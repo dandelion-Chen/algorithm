@@ -1,22 +1,36 @@
-const sulotion = (nums, sum) => {
-    if(!nums || nums.length <= 1) return [];
-    let newNums = [...nums].sort((a, b) => a - b);
-    let leftIndex = 0;
-    let rightIndex = newNums.length - 1;
-    while(leftIndex !== rightIndex) {
-        const currentSum = newNums[leftIndex] + newNums[rightIndex];
-        if (currentSum === sum) {
-            break;
-        } else if(currentSum < sum) {
-            leftIndex++;
-        } else if(currentSum > sum) {
-            rightIndex--;
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+var addTwoNumbers = function(l1, l2) {
+    let l3, tail, carry = 0;
+    let sum;
+    while(l1 || l2) {
+        const n1 = l1 ? l1.val : 0;
+        const n2 = l2 ? l2.val : 0;
+        const sum = n1 + n2 + carry;
+        carry = parseInt(sum/10);
+        if(!l3) {
+            l3  = tail = new ListNode(sum % 10)
+        } else {
+            tail.next = new ListNode(sum % 10);
+            tail = tail.next;
         }
+
+        l2 = l2 ? l2.next : null;
+        l1 = l1 ? l1.next : null;
+    }
+     if(carry > 0){
+        tail.next = new ListNode(carry);
     }
 
-    const oldFirstIndex = nums.findIndex(num => num === newNums[leftIndex]);
-    const oldSecondIndex = nums.findIndex(num => num === newNums[rightIndex]);
-
-    return [oldFirstIndex, oldSecondIndex].sort((a, b) => a - b);
-}
-
+    return l3
+};
